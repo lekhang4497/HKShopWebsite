@@ -1,0 +1,254 @@
+<h2 class="mb-3" style="font-family: Lobster; font-size:3rem">
+    Dashboard</h2>
+<h2 class="mb-4">Show general sales</h2>
+<div class="row">
+    <div class="col-md-9">
+        <div class="input-group input-daterange">
+            <input type="text" class="form-control datepicker" placeholder="Start date" id="inpStart">
+            <div class="input-group-append">
+                <span class="input-group-text">To</span>
+            </div>
+            <input type="text" class="form-control datepicker" placeholder="End date" id="inpEnd">
+        </div>
+    </div>
+    <div class="col-md-3">
+        <button type="button" class="btn btn-primary d-block w-100" id="showBtn">Show chart</button>
+    </div>
+</div>
+<div class="chart-container mt-4" style="position: relative; height:400px; width:100%">
+    <canvas id="myChart" width="400" height="400"></canvas>
+</div>
+<h2 class="mb-4">Show sales in products</h2>
+<p>Choose multiple products and press "Show chart" button above to compare these product's sales</p>
+<table id="user-table" class="table table-striped table-bordered" style="width:100%;border-collapse: collapse !important;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        <tr>
+            <td class="id-cell">{{this._id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.price}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<script>
+    var idSet = new Set();
+    var borderColor = [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+    ];
+    var backgroundColor = [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+    ]
+    function makeData(raw, productId = null) {
+        var map = {};
+        raw.sort((a, b) => {
+            var aDate = new Date(a.createdAt);
+            var bDate = new Date(b.createdAt);
+            return aDate.getTime() - bDate.getTime();
+        })
+        raw.forEach((d) => {
+            date = new Date(d.createdAt);
+            var dateStr = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+            var quantity = 0;
+            d.items.forEach((item) => {
+                if (productId) {
+                    if (item.productId == productId)
+                        quantity += item.quantity;
+                } else {
+                    quantity += item.quantity;
+                }
+            });
+            if (!map[dateStr]) {
+                map[dateStr] = quantity;
+            } else {
+                map[dateStr] += quantity;
+            }
+        });
+        var data = [];
+        Object.keys(map).forEach((key) => {
+            data.push({
+                x: key,
+                y: map[key]
+            })
+        });
+        return data;
+    }
+
+    function generalChartHandler() {
+        var start = inpStart.value;
+        var end = inpEnd.value;
+        $.ajax({
+            url: 'api/order/data',
+            type: 'GET',
+            data: {
+                start: start,
+                end: end
+            },
+            success: function (response) {
+                var data = makeData(response);
+                drawChart(data);
+            },
+            error: function (xhr) {
+                toastr.error(errorThrown, 'Fail');
+            }
+        });
+    }
+
+    function compareProductsHandler() {
+        var start = inpStart.value;
+        var end = inpEnd.value;
+        let idArray = [...idSet];
+        $.ajax({
+            url: 'api/order/data_compare',
+            type: 'POST',
+            data: {
+                start: start,
+                end: end,
+                data: idArray
+            },
+            success: function (response) {
+                var dataSet = [];
+                Object.keys(response).forEach((key) => {
+                    var childData = {};
+                    childData.label = key;
+                    childData.data = makeData(response[key], key);
+                    var red = (Math.random() * 255).toFixed();
+                    var green = (Math.random() * 255).toFixed();
+                    var blue = (Math.random() * 255).toFixed();
+                    childData.borderColor = 'rgba(' + red + ',' + green + ',' + blue + ',1)';
+                    childData.backgroundColor = 'rgba(' + red + ',' + green + ',' + blue + ',0.2)';
+                    dataSet.push(childData);
+                });
+                drawChartDataSet(dataSet);
+            },
+            error: function (xhr) {
+                toastr.error(errorThrown, 'Fail');
+            }
+        });
+    }
+
+    $(function () {
+        $('.id-cell').click((event) => {
+            var id = $(event.target).text();
+            idSet.add(id);
+            $(event.target).addClass('table-success');
+        });
+        //initial chart
+        drawChart([]);
+        //
+        $('#showBtn').click(() => {
+            if (idSet.size === 0) {
+                generalChartHandler();
+            } else {
+                compareProductsHandler();
+            }
+
+        })
+    })
+
+    function drawChartDataSet(dataSet) {
+        var timeFormat = 'DD/MM/YYYY';
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: dataSet
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                title: {
+                    display: true,
+                    text: "HKShop's sales"
+                },
+                scales: {
+                    xAxes: [{
+                        type: "time",
+                        time: {
+                            parser: timeFormat,
+                            tooltipFormat: 'll'
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'value'
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function drawChart(data) {
+        var timeFormat = 'DD/MM/YYYY';
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: "Sales",
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                title: {
+                    display: true,
+                    text: "HKShop's sales"
+                },
+                scales: {
+                    xAxes: [{
+                        type: "time",
+                        time: {
+                            parser: timeFormat,
+                            tooltipFormat: 'll'
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'value'
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+
+</script>

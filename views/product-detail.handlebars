@@ -1,0 +1,231 @@
+<section class="product-detail py-5">
+    <div class="container">
+        <h2 class="mb-5 font-weight-bold">Product detail</h2>
+        <div class="card">
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="product-slide p-4">
+                        <div class="product-slide-item">
+                            <img src="{{product.imagePath}}" alt="product">
+                        </div>
+                        <div class="product-slide-item">
+                            <img src="{{product.imagePath}}" alt="product">
+                        </div>
+                        <div class="product-slide-item">
+                            <img src="{{product.imagePath}}" alt="product">
+                        </div>
+                        <div class="product-slide-item">
+                            <img src="{{product.imagePath}}" alt="product">
+                        </div>
+                    </div>
+
+                    <div class="py-3 px-5">
+                        <div class="slide-nav">
+                            <div class="slide-nav-item">
+                                <img src="{{product.imagePath}}" alt="product">
+                            </div>
+                            <div class="slide-nav-item">
+                                <img src="{{product.imagePath}}" alt="product">
+                            </div>
+                            <div class="slide-nav-item">
+                                <img src="{{product.imagePath}}" alt="product">
+                            </div>
+                            <div class="slide-nav-item">
+                                <img src="{{product.imagePath}}" alt="product">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 border-left">
+                    <div class="product-info d-flex flex-column h-100  py-3">
+                        <h2>{{product.name}}</h2>
+                        <div class="star-rating">
+                            <fieldset class="rate">
+                                <input id="rate2-star5" type="radio" name="rate2" value="5" />
+                                <label for="rate2-star5" title="Awesome">5</label>
+
+                                <input id="rate2-star5-half" type="radio" name="rate2" value="4.5" />
+                                <label class="star-half" for="rate2-star5-half" title="Excellent">4.5</label>
+
+                                <input id="rate2-star4" type="radio" name="rate2" value="4" />
+                                <label for="rate2-star4" title="Very good">4</label>
+
+                                <input id="rate2-star3-half" type="radio" name="rate2" value="3.5" />
+                                <label class="star-half" for="rate2-star3-half" title="Good">3.5</label>
+
+                                <input id="rate2-star3" type="radio" name="rate2" value="3" />
+                                <label for="rate2-star3" title="Satisfactory">3</label>
+
+                                <input id="rate2-star2-half" type="radio" name="rate2" value="2.5" />
+                                <label class="star-half" for="rate2-star2-half" title="Unsatisfactory">2.5</label>
+
+                                <input id="rate2-star2" type="radio" name="rate2" value="2" />
+                                <label for="rate2-star2" title="Bad">2</label>
+
+                                <input id="rate2-star1-half" type="radio" name="rate2" value="1.5" />
+                                <label class="star-half" for="rate2-star1-half" title="Very bad">1.5</label>
+
+                                <input id="rate2-star1" type="radio" name="rate2" value="1" />
+                                <label for="rate2-star1" title="Awful">1</label>
+
+                                <input id="rate2-star0-half" type="radio" name="rate2" value="0.5" />
+                                <label class="star-half" for="rate2-star0-half" title="Horrific">0.5</label>
+                            </fieldset>
+                        </div>
+                        <p>{{product.description}}</p>
+                        <div class="mt-auto">
+                            <p class="price">{{product.price}}</p>
+                            <button id="add-cart-btn" class="btn btn-danger px-5 py-2 text-light">
+                                <i class="fas fa-shopping-cart align-middle pr-3"></i>
+                                <span class="align-middle">Add to cart</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="products" class="py-5">
+    <div class="container">
+        <h2 class="mb-5 font-weight-bold">Recommended</h2>
+        <div class="slick-carousel">
+            <div>
+                <div class="product-item mx-4">
+                    <div class="card">
+                        <div class="img-wrapper p-2 border-bottom">
+                            <img class="img-fluid m-auto" src="/images/product/1.jpg" alt="product photo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold text-center">Shirt 1</h5>
+                            <h6 class="card-subtitle font-weight-bold mb-2 text-muted text-center">$20</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="product-item mx-4">
+                    <div class="card">
+                        <div class="img-wrapper p-2 border-bottom">
+                            <img class="img-fluid m-auto" src="/images/product/2.jpg" alt="product photo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold text-center">Shirt 1</h5>
+                            <h6 class="card-subtitle font-weight-bold mb-2 text-muted text-center">20.000</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="product-item mx-4">
+                    <div class="card">
+                        <div class="img-wrapper p-2 border-bottom">
+                            <img class="img-fluid m-auto" src="/images/product/3.jpg" alt="product photo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold text-center">Shirt 1</h5>
+                            <h6 class="card-subtitle font-weight-bold mb-2 text-muted text-center">30.000</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="product-item mx-4">
+                    <div class="card">
+                        <div class="img-wrapper p-2 border-bottom">
+                            <img class="img-fluid m-auto" src="/images/product/4.jpg" alt="product photo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold text-center">Shirt 1</h5>
+                            <h6 class="card-subtitle font-weight-bold mb-2 text-muted text-center">40.000</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="product-item mx-4">
+                    <div class="card">
+                        <div class="img-wrapper p-2 border-bottom">
+                            <img class="img-fluid m-auto" src="/images/product/1.jpg" alt="product photo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold text-center">Shirt 1</h5>
+                            <h6 class="card-subtitle font-weight-bold mb-2 text-muted text-center">20.000</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="media" class="py-5">
+    <div class="container">
+        <h2 class="mb-5 font-weight-bold">Review</h2>
+        <div class="row mb-lg-5">
+            <div class="col-md-12">
+                <div class="media">
+                    <img class="align-self-start mr-3 rounded-circle" src="/images/avatar.jpg" alt="Generic placeholder image">
+                    <div class="media-body">
+                        <h5 class="mt-0 font-weight-bold">Skipper</h5>
+                        <p>Hello guys, I'm Skipper and I'm a penguin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-lg-5">
+            <div class="col-md-12">
+                <div class="media">
+                    <img class="align-self-start mr-3 rounded-circle" src="/images/avatar.jpg" alt="Generic placeholder image">
+                    <div class="media-body">
+                        <h5 class="mt-0 font-weight-bold">Skipper</h5>
+                        <p>Hello guys, I'm Skipper and I'm a penguin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-lg-5">
+            <div class="col-md-12">
+                <div class="media">
+                    <img class="align-self-start mr-3 rounded-circle" src="/images/avatar.jpg" alt="Generic placeholder image">
+                    <div class="media-body">
+                        <h5 class="mt-0 font-weight-bold">Skipper</h5>
+                        <p>Hello guys, I'm Skipper and I'm a penguin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-lg-5">
+            <div class="col-md-12">
+                <div class="media">
+                    <img class="align-self-start mr-3 rounded-circle" src="/images/avatar.jpg" alt="Generic placeholder image">
+                    <div class="media-body">
+                        <h5 class="mt-0 font-weight-bold">Skipper</h5>
+                        <p>Hello guys, I'm Skipper and I'm a penguin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(function () {
+        $('#add-cart-btn').click((e) => {
+            $.ajax({
+                type: 'GET',
+                url: '/cart/add/' + '{{product._id}}',
+                success: (data) => {
+                    if (data.success) {
+                        toastr.success('Add to cart successfully', 'Success');
+                        location = location;
+                    } else {
+                        toastr.error('Fail to add product', 'Fail');
+                    }
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(errorThrown, 'Fail');
+                }
+            })
+        });
+    });
+</script>

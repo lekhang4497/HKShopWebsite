@@ -1,0 +1,182 @@
+<section class="profile py-5">
+    <div class="container">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="p-2">
+                        <div class="text-center my-4">
+                            <img class="img-fluid rounded-circle w-50" src="/images/avatar.jpg" alt="">
+                        </div>
+                        <nav class="nav flex-column profile-nav text-center">
+                            <a class="nav-link active btn btn-outline-primary my-2" data-toggle="tab" href="#tabProfile" role="tab">Profile</a>
+                            <a class="nav-link btn btn-outline-primary my-2" data-toggle="tab" href="#tabPassword" role="tab">Password</a>
+                            <a class="nav-link btn btn-outline-primary my-2" role="button" href="/order">History</a>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-md-9 border-left">
+                    <div class="py-4 px-3">
+                        <div class="tab-content" id="myTabContent">
+                            <!-- Profile tab -->
+                            <div class="tab-pane fade show active" id="tabProfile" role="tabpanel">
+                                <h3 class="mb-4">Profile</h3>
+                                <form id="change-info-form">
+                                    <div class="form-group">
+                                        <label for="inputUsername">Username</label>
+                                        <input type="text" name="username" value="{{user.username}}" class="form-control" id="inputUsername" placeholder="Username"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail">Email</label>
+                                        <input type="text" value="{{user.email}}" name="email" class="form-control" id="inputEmail" placeholder="Email address">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="inputName">Fullname</label>
+                                                <input type="text" value="{{user.fullName}}" name="fullName" class="form-control" id="inputName" placeholder="Fullname">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="inputPhone">Phone number</label>
+                                                <input type="number" value="{{user.phoneNumber}}" name="phoneNumber" class="form-control" id="inputPhone" placeholder="Phone number">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputAddress">Address</label>
+                                        <input type="text" value="{{user.address}}" name="address" class="form-control" id="inputAddress" placeholder="E.g: 1234 Main St...">
+                                    </div>
+                                    {{!-- Csrf protection --}}
+                                    <input type="hidden" name="_csrf" value="{{csrfToken}}"> {{!-- --}}
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- Password tab -->
+                            <div class="tab-pane fade" id="tabPassword" role="tabpanel">
+                                <h3 class="mb-4">Password</h3>
+                                <form id="change-pass-form">
+                                    <div class="form-group">
+                                        <label for="inputOldPass">Old password</label>
+                                        <input name="oldPassword" type="password" class="form-control" id="inputOldPass" placeholder="...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputNewPass">New password</label>
+                                        <input name="password" type="password" class="form-control" id="inputNewPass" placeholder="...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputConPass">Confirm password</label>
+                                        <input name="confirmPass" type="password" class="form-control" id="inputConPass" placeholder="...">
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                    {{!-- Csrf protection --}}
+                                    <input type="hidden" name="_csrf" value="{{csrfToken}}"> {{!-- --}}
+                                </form>
+                            </div>
+                            <!-- History tab -->
+                            <div class="tab-pane fade" id="tabHistory" role="tabpanel">
+                                <h3 class="mb-4">History</h3>
+                                <table class="app-table table table-striped table-bordered" style="width:100%;border-collapse: collapse !important;">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Price</th>
+                                            <th>Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Shirt A</td>
+                                            <td>A beautiful shirt</td>
+                                            <td>$20</td>
+                                            <td>1/1/2015</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Shirt B</td>
+                                            <td>A beautiful shirt</td>
+                                            <td>$30</td>
+                                            <td>1/1/2015</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Shirt C</td>
+                                            <td>A beautiful shirt</td>
+                                            <td>$25</td>
+                                            <td>1/1/2015</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(function () {
+        $('#change-info-form').submit((e) => {
+            e.preventDefault();
+            $.ajax({
+                type: "PUT",
+                url: '/user/' + '{{user._id}}',
+                data: $('#change-info-form').serialize(),
+                success: (data) => {
+                    if (data.success === false) {
+                        toastr.error('Update failed', 'Fail');
+                        return;
+                    }
+                    toastr.success('Information updated successfully', 'Success');
+                    location = location;
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(errorThrown, 'Fail');
+                }
+            });
+        });
+        $('#change-pass-form').submit((e) => {
+            e.preventDefault();
+            var form = $('#change-pass-form');
+            var ser = form.serializeArray();
+            var formData = {};
+            ser.forEach((e) => {
+                formData[e.name] = e.value;
+            })
+            if (formData['password'] !== formData['confirmPass']) {
+                toastr.error('The confirming password is not correct', 'Error');
+                return;
+            }
+            var body = {
+                oldPassword: formData['oldPassword'],
+                password: formData['password'],
+                _csrf: formData['_csrf']
+            }
+            $.ajax({
+                type: "PUT",
+                url: "/user/password/" + '{{user._id}}',
+                data: body,
+                success: (data) => {
+                    if (data.success === false) {
+                        toastr.error('Update failed', 'Fail');
+                        return;
+                    }
+                    toastr.success('Password updated successfully', 'Success');
+                    location = location;
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(errorThrown, 'Login fail');
+                }
+            });
+        })
+    })
+</script>

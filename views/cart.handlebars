@@ -1,0 +1,237 @@
+<style>
+    .method img {
+        width: 50%;
+    }
+
+    .method {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding-top: 20px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 2px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-logos {
+        display: flex;
+        width: 150px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .radio-input {
+        margin-top: 20px;
+    }
+
+    input[type='radio'] {
+        display: inline-block;
+    }
+</style>
+<section class="cart-section py-5">
+    <div class="container">
+        <h2 class="mb-5 font-weight-bold">Your shopping cart</h2>
+        <div class="row">
+            <div class="col-md-8">
+                {{#if products}}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-5">
+                            <div class="col-md-5 font-weight-bold">
+                                Total: {{products.length}} products
+                            </div>
+                            <div class="col-md-2">
+                                Price
+                            </div>
+                            <div class="col-md-3">
+                                Quantiy
+                            </div>
+                            <div class="col-md-2 text-center">
+                                Remove
+                            </div>
+                        </div>
+                        {{#each products}}
+                        <div class="row mb-5">
+                            <div class="col-md-2">
+                                <a href="/product/{{this.item._id}}">
+                                    <img src="{{this.item.imagePath}}" class="img-fluid">
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <p class="m-0 font-weight-bold">{{this.item.name}}</p>
+                                <div class="mt-1">
+                                    <div class="form-group form-inline">
+                                        <label class="mr-3">
+                                            <small>Size</small>
+                                        </label>
+                                        <select class="form-control form-control-sm" id="inpSelectSize">
+                                            <option>S</option>
+                                            <option selected>M</option>
+                                            <option>L</option>
+                                            <option>XL</option>
+                                            <option>XXL</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="m-0">
+                                    <div class="form-group form-inline">
+                                        <label class="mr-2">
+                                            <small>Color</small>
+                                        </label>
+                                        <select class="form-control form-control-sm" id="inpSelectColor">
+                                            <option selected>Default</option>
+                                            <option>Red</option>
+                                            <option>Green</option>
+                                            <option>Blue</option>
+                                            <option>Yellow</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <p class="price text-danger">{{this.item.price}}</p>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button onclick="reduceCart('{{this.item._id}}')" class="btn btn-danger" type="button">-</button>
+                                    </div>
+                                    <input type="text" value="{{this.qty}}" class="form-control" placeholder="Quantity">
+                                    <div class="input-group-append">
+                                        <button onclick="addCart('{{this.item._id}}')" class="btn btn-success" type="button">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <button type="button" class="btn btn-danger" onclick="removeFromCart('{{this.item._id}}')">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                {{else}}
+                <div class="card">
+                    <div class="card-body text-center">
+                        You haven't had anything in cart yet
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                Subtotal
+                            </div>
+                            <div class="col-6 text-right">{{totalPrice}} VND</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                Discount
+                            </div>
+                            <div class="col-6 text-right">0</div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3 d-flex align-items-center">
+                                Total
+                            </div>
+                            <div class="col-9 text-right price text-danger" style="font-size: 2rem">{{totalPrice}}
+                                <small>VND</small>
+                            </div>
+                        </div>
+                        <div class="payment-method" style="display: flex; justify-content: space-between;">
+                            <label for="paypal" class="method paypal blue-border">
+                                <img src="/images/onepay_logo.png">
+                                <div class="radio-input">
+                                    <div class="custom-control custom-radio">
+                                        <input value="onepay" type="radio" id="onepay" name="payment" class="custom-control-input">
+                                        <label class="custom-control-label" for="onepay">Onepay</label>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label for="paypal" class="method paypal blue-border">
+                                <img src="/images/paypal_logo.png">
+                                <div class="radio-input">
+                                    <div class="custom-control custom-radio">
+                                        <input value="paypal" type="radio" id="paypal" name="payment" class="custom-control-input">
+                                        <label class="custom-control-label" for="paypal">Paypal</label>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="text-center">
+                            <img src="/images/cod.png" class="img-fluid" width="100px">
+                            <div class="custom-control custom-radio">
+                                <input checked value="cod" type="radio" id="cod" name="payment" class="custom-control-input">
+                                <label class="custom-control-label" for="cod">Cash on delivery</label>
+                            </div>
+                        </div>
+                        <form action="/vn-payment/checkout" method="POST" id="checkout-form">
+                            <input name="codAddress" type="text" class="form-control mt-3" id="inpCodAddress" placeholder="Your address">
+                            <button type="button" id="checkout-btn" class="btn btn-danger w-100 mt-4">Check out</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    reduceCart = (id) => {
+        $.get("/cart/reduce/" + id, (data) => {
+            if (data.success) {
+                location = location;
+            }
+        })
+    }
+
+    addCart = (id) => {
+        $.get("/cart/add/" + id, (data) => {
+            if (data.success) {
+                location = location;
+            }
+        })
+    }
+
+    removeFromCart = (id) => {
+        $.get("/cart/remove/" + id, (data) => {
+            if (data.success) {
+                location = location;
+            }
+        })
+    }
+
+    $(function () {
+        $('input[type=radio][name=payment]').change(function () {
+            if (this.value === 'cod') {
+                $('#inpCodAddress').show();
+            } else {
+                $('#inpCodAddress').hide();
+            }
+        });
+
+        $('#checkout-btn').click((event) => {
+            var method = $('input[name="payment"]:checked').val();
+            var checkoutForm = $('#checkout-form');
+            switch (method) {
+                case 'onepay':
+                    checkoutForm.attr('action', '/vn-payment/checkout');
+                    break;
+                case 'paypal':
+                    checkoutForm.attr('action', '/payment');
+                    break;
+                case 'cod':
+                    checkoutForm.attr('action', '/vn-payment/cod');
+                    break;
+            }
+            checkoutForm.submit();
+        })
+    });
+</script>

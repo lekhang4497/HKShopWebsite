@@ -1,0 +1,99 @@
+<!-- Delete Modal -->
+<div class="modal fade" id="productDeleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this product
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="delConfirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="productEditModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="inpName">Name</label>
+                            <input name="name" class="form-control" id="inpName" aria-describedby="emailHelp" placeholder="Name">
+                        </div>
+                        <div class="form-group col">
+                            <label for="inpPrice">Price</label>
+                            <input name="price" class="form-control" id="inpPrice" aria-describedby="emailHelp" placeholder="Price">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inpDescription">Description</label>
+                        <input name="description" class="form-control" id="inpDescription" placeholder="Description">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="editBtn">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add New Modal -->
+<div class="modal fade" id="productAddModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" name="addProductForm" action="/api/product" encType="multipart/form-data" onsubmit="return validateAddForm()">
+                <div class="modal-body">
+
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="inpName">Name</label>
+                            <input name="name" class="form-control" id="inpName" aria-describedby="emailHelp" placeholder="Name">
+                        </div>
+                        <div class="form-group col">
+                            <label for="inpPrice">Price</label>
+                            <input name="price" class="form-control" id="inpPrice" aria-describedby="emailHelp" placeholder="Price">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inpDescription">Description</label>
+                        <input name="description" class="form-control" id="inpDescription" placeholder="Description">
+                    </div>
+                    <div class="form-group">
+                        <label for="inpImage">Image</label>
+                        <input type="file" name="image" class="form-control" id="inpImage" placeholder="Image">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

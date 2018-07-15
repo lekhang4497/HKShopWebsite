@@ -1,0 +1,56 @@
+<section class="product-gallery py-5">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="p-4 blocks m-0">
+                        <div class="block-content mt-3 mb-5">
+                            <div class="block-icon">
+                                <i class="far fa-gem"></i>
+                            </div>
+                            <h2 class="block-title" style="font-family: 'Lobster'">Customer Protection</h2>
+                            <p class="paragraph">We apply Customer Protection Policy, you can return your product anytime within 12 months and get 100% refund</p>
+                        </div>
+                        <div class="block-content">
+                            <div class="block-icon">
+                                <i class="far fa-paper-plane"></i>
+                            </div>
+                            <h2 class="block-title" style="font-family: 'Lobster'">24h Shipping</h2>
+                            <p class="paragraph">Get your orders immediately with our 24h-shipping for free</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 border-left">
+                    <div class="p-4">
+                        <h2 class="mb-3" style="font-family: 'Lobster'">Total: {{total}} Products</h2>
+                        <ul class="gallery">
+                            {{#each products}}
+                            <li class="product-item">
+                                <a href="/product/{{this._id}}">
+                                    <div class="card card-shadow" data-toggle="tooltip" data-placement="top" title="{{this.name}} - {{this.description}}">
+                                        <div class="img-wrapper p-2 border-bottom">
+                                            <img class="img-fluid m-auto" src="{{this.imagePath}}" alt="product photo">
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title font-weight-bold text-center" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{this.name}}</h5>
+                                            <h6 class="card-subtitle font-weight-bold mb-2 text-muted text-center">{{this.price}}</h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            {{/each}}
+                        </ul>
+                        <nav class="mypagination" style="display:flex; justify-content: center">
+                            {{{paginateHelper pagination paginationClass="pagination-md pagination"}}}
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(function () {
+        $('.mypagination').find('li').addClass('page-item').find('a').addClass('page-link');
+    });
+</script>

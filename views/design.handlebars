@@ -1,0 +1,112 @@
+<section class="design py-5">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Design pannel
+            </div>
+            <div class="card-body">
+
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="inputTool">Select tool</label>
+                            <select id="tool" class="form-control">
+                                <option value="brush">Brush</option>
+                                <option value="eraser">Eraser</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="inpColor">Shirt color</label>
+                            <select class="form-control" id="inpColor">
+                                <option value="holder" selected disabled>Choose your shirt color</option>
+                                <option value="white">White</option>
+                                <option value="red">Red</option>
+                                <option value="blue">Blue</option>
+                                <option value="yellow">Yellow</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Brush color</label>
+                    <input type='color' name='color' value='#3355cc' id="inpBrushColor" />
+                </div>
+                <button type="button" class="btn btn-primary" onclick="onSaveShirt()">Add to cart</button>
+                <div id="design-panel" style="width:600px; margin: auto;">
+                    <canvas id="design-canvas" width=300 height=300></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="drawInfo" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Instruction</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Drag mouse on the panel to start drawing
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function onSaveShirt() {
+        var canvas = $('.konvajs-content').find('canvas');
+        var canvas = canvas.get()[0];
+        var image = canvas.toDataURL("image/png");
+        body = {
+            image: image
+        }
+        $.ajax({
+            type: "POST",
+            url: "/design",
+            data: body,
+            success: (data) => {
+                toastr.success('Save Successfully', 'Success');
+                location = '/cart';
+            },
+            error: (XMLHttpRequest, textStatus, errorThrown) => {
+                toastr.error(errorThrown, 'Fail');
+            }
+        });
+    }
+
+    $(function () {
+        $('#inpColor').change((event) => {
+            var color = event.target.value;
+            var canvas = $('.konvajs-content').find('canvas').get()[0];
+            var context = canvas.getContext('2d');
+            // Add image
+            var shirt = new Image();
+            shirt.onload = function () {
+                //draw background image
+                context.drawImage(shirt, canvas.width / 2 - 250, 20);
+            };
+            switch (color) {
+                case 'white':
+                    shirt.src = 'images/blank-shirt.png';
+                    break;
+                case 'red':
+                    shirt.src = 'images/blank-shirt-red.png';
+                    break;
+                case 'blue':
+                    shirt.src = 'images/blank-shirt-blue.png';
+                    break;
+                case 'yellow':
+                    shirt.src = 'images/blank-shirt-yellow.png';
+                    break;
+            }
+        })
+    })
+</script>

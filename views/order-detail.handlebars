@@ -1,0 +1,44 @@
+<section class="profile py-5">
+    <div class="container">
+        <div class="card">
+            <div class="py-4 px-5">
+                <h3 class="mb-3">Order detail</h3>
+                <table class="w-100 my-3">
+                    <tr>
+                        <th>Order ID:</th>
+                        <td>{{order._id}}</td>
+                    </tr>
+                    <tr>
+                        <th>Create at:</th>
+                        <td>{{order.createdAt}}</td>
+                    </tr>
+                </table>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Product ID</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each order.items}}
+                        <tr>
+                            <th scope="row">{{this.productId._id}}</th>
+                            <td>{{this.productId.name}}</td>
+                            <td>{{this.productId.price}} {{../currency}}</td>
+                            <td>{{this.quantity}}</td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <td colspan="2" class="total-price-text">Total Price</td>
+                            <td colspan="2" class="total-price">{{order.totalPrice}} {{order.currency}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="/order" role="button" class="btn btn-primary">Back to order list</a>
+            </div>
+        </div>
+    </div>
+</section>

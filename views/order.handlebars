@@ -1,0 +1,46 @@
+<section class="profile py-5">
+    <div class="container">
+        <div class="card">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="p-2">
+                        <div class="text-center my-4">
+                            <img class="img-fluid rounded-circle w-50" src="/images/avatar.jpg" alt="">
+                            <div>
+                                <a role="button" class="btn btn-outline-primary d-block my-2" href="/user/profile">My Profile</a>
+                                <a role="button" class="btn btn-primary text-light d-block">My Orders</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 border-left">
+                    <div class="py-4 px-3">
+                        <div>
+                            <h3 class="mb-4">Order History</h3>
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Order ID</th>
+                                        <th scope="col">Created at</th>
+                                        <th scope="col">Total price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each orders}}
+                                    <tr>
+                                        <th scope="row">
+                                            <a href="/order/{{this._id}}">{{this._id}}</a>
+                                        </th>
+                                        <td class="simple-date">{{this.createdAt}}</td>
+                                        <td>{{this.totalPrice}} {{this.currency}}</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

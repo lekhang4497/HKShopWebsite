@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{>head}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.1/datatables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
+    <title>HKShop Admin</title>
+</head>
+
+<body>
+    <section class="admin">
+        <div class="container-fluid h-100">
+            <div class="row h-100">
+                <aside class="col-12 col-md-2 p-0 bg-dark">
+                    <div class="text-light p-3">
+                        <p class="m-0">
+                            <i class="fas fa-star"></i> Admin panel
+                        </p>
+                    </div>
+                    <div class="media p-3 bg-success text-light">
+                        <img class="mr-3 img-fluid rounded-circle" src="/images/avatar.jpg" width="64" height="64">
+                        <div class="media-body">
+                            <h5 class="mt-0 text-truncate w-75 text-light">Admin</h5>
+                            Online
+                        </div>
+                    </div>
+                    <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2">
+                        <div class="collapse navbar-collapse">
+                            <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+                                <li class="nav-item">
+                                    <a class="nav-link pl-0 text-nowrap" href="/">
+                                        <i class="fa fa-bullseye fa-fw"></i>
+                                        <span class="font-weight-bold">HKShop</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-0" href="/admin">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <span class="d-none d-md-inline">Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-0" href="/admin/user">
+                                        <i class="fas fa-users"></i>
+                                        <span class="d-none d-md-inline">User</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-0" href="/admin/product">
+                                        <i class="fas fa-box"></i>
+                                        <span class="d-none d-md-inline">Product</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-0" href="/admin/order">
+                                        <i class="fas fa-list-ol"></i>
+                                        <span class="d-none d-md-inline">Order</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-0" href="/user/logout">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span class="d-none d-md-inline">Logout</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </aside>
+                <main class="col bg-faded py-3">
+                    {{{body}}}
+                </main>
+            </div>
+        </div>
+    </section>
+    {{#if products}} {{>product-modals}} {{else if users}} {{>user-modals}} {{else if orders}} {{>order-modals}} {{/if}}
+    <!-- Scripts -->
+    {{>foot}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.1/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+    <script src="/js/admin-table.js"></script>
+    <script>
+        $(function(){
+            $('.datepicker').datepicker({});
+        })
+    </script>
+</body>
+
+</html>

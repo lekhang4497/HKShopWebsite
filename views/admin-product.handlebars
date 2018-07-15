@@ -1,0 +1,130 @@
+<h2 class="mb-3" style="font-family: Lobster; font-size:3rem">
+    Product</h2>
+<button type="button" class="btn btn-primary mb-4 ml-auto d-block mr-3" data-toggle="modal" data-target="#productAddModal">Add new</button>
+<table id="user-table" class="table table-striped table-bordered" style="width:100%;border-collapse: collapse !important;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        <tr>
+            <td>{{this._id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.price}}</td>
+            <td style="white-space: nowrap;">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productEditModal" onclick="setEdit('{{this.stringified}}')">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#productDeleteModal" onclick="setDelProduct('{{this._id}}')">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<script>
+    var delId;
+    var editingProduct;
+    function setDelProduct(id) {
+        delId = id;
+    }
+
+    function setEdit(stringified) {
+        editingProduct = JSON.parse(stringified);
+        editForm.name.value = editingProduct.name;
+        editForm.description.value = editingProduct.description;
+        editForm.price.value = editingProduct.price;
+    }
+
+    function validateAddForm() {
+        var form = document.forms['addProductForm'];
+        var body = {
+            name: form['name'].value,
+            description: form['description'].value,
+            price: form['price'].value
+        }
+        // validation
+        if (body.name === '' || body.description === '' || body.price === '') {
+            toastr.error('These fields can not be blank', 'Fail');
+            return false;
+        } else if (body.name.length < 3) {
+            toastr.error('Name must be at least 3 characters', 'Fail');
+            return false;
+        } else if (isNaN(parseInt(body.price))) {
+            toastr.error('Price must be a number', 'Fail');
+            return false;
+        }
+    }
+
+    $(function () {
+        $('#delConfirm').click(() => {
+            $.ajax({
+                method: 'DELETE',
+                url: '/api/product/' + delId,
+                headers: { authentication: localStorage.getItem('token') },
+                success: (res) => {
+                    if (res.status != 'error') {
+                        toastr.success('Delete successfully', 'Success');
+                        location = location;
+                    } else {
+                        toastr.success('Delete Fail', 'Fail');
+                    }
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(errorThrown, 'Fail');
+                }
+            })
+        });
+
+        $('#editBtn').click(() => {
+            var form = $('#editForm');
+            var ser = form.serializeArray();
+            var formData = {};
+            ser.forEach((e) => {
+                formData[e.name] = e.value;
+            })
+            var body = {
+                name: formData['name'],
+                description: formData['description'],
+                price: formData['price']
+            }
+            // validation
+            if (body.name === '' || body.description === '' || body.price === '') {
+                toastr.error('These fields can not be blank', 'Fail');
+                return;
+            } else if (body.name.length < 3) {
+                toastr.error('Name must be at least 3 characters', 'Fail');
+                return;
+            } else if (isNaN(parseInt(body.price))) {
+                toastr.error('Price must be a number', 'Fail');
+                return;
+            }
+            $.ajax({
+                method: 'PUT',
+                url: '/api/product/' + editingProduct._id,
+                data: body,
+                headers: { authentication: localStorage.getItem('token') },
+                success: (res) => {
+                    if (res.status != 'error') {
+                        toastr.success('Update successfully', 'Success');
+                        location = location;
+                    } else {
+                        toastr.error('Update Fail', 'Fail');
+                    }
+                },
+                error: (XMLHttpRequest, textStatus, errorThrown) => {
+                    toastr.error(errorThrown, 'Fail');
+                }
+            })
+        });
+    });
+</script>
